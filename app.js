@@ -1,7 +1,7 @@
-const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 const db = require("./db");
+const express = require("express");
+const path = require("path");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -101,16 +101,11 @@ app.get("/delete", (req, res) => {
 });
 
 app.get("/clear", async (req, res) => {
-    const cronJobIPs = [
-        "116.203.134.67",
-        "116.203.129.16",
-        "23.88.105.37",
-        "128.140.8.200",
-    ]
-    if (cronJobIPs.includes(req.socket.remoteAddress)) {
+    if (req.query.cronJobKey === process.env.CRON_JOB_KEY) {
         await db.processDeletions();
+        res.status(200).send("Deletions processed");
     } else {
-        console.log(`Failed attempt to process deletions from non-cron-job IP address: ${req.socket.remoteAddress}`);
+        console.log(`Failed attempt to process deletions with key: ${req.query.cronJobKey}`);
         res.redirect("/");
     }
 });
