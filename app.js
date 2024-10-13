@@ -110,6 +110,7 @@ app.get("/clear", async (req, res) => {
     if (cronJobIPs.includes(req.socket.remoteAddress)) {
         await db.processDeletions();
     } else {
+        console.log(`Failed attempt to process deletions from non-cron-job IP address: ${req.socket.remoteAddress}`);
         res.redirect("/");
     }
 });
