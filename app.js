@@ -100,6 +100,20 @@ app.get("/delete", (req, res) => {
     res.render("delete");
 });
 
+app.get("/clear", async (req, res) => {
+    const cronJobIPs = [
+        "116.203.134.67",
+        "116.203.129.16",
+        "23.88.105.37",
+        "128.140.8.200",
+    ]
+    if (cronJobIPs.includes(req.socket.remoteAddress)) {
+        await db.processDeletions();
+    } else {
+        res.redirect("/");
+    }
+});
+
 app.post("/settings", async (req, res) => {
     const user = await db.getUser(req.cookies.loggedIn.email);
 

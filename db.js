@@ -315,6 +315,43 @@ const deleteUserData = async email => {
     }
 };
 
+/** Process the deletions collection. */
+const processDeletions = async () => {
+    try {
+        const deletions = db.collection("deletions");
+        const deletion = await deletions.findOne({});
+        if (deletion === null) {
+            return;
+        }
+
+        const users = db.collection("users");
+        const usersWithSecretID = await users.find({
+            shares: {
+                $elemMatch: {
+                    secretID: deletion.secretID,
+                }
+            }
+        }).toArray();
+        if (usersWithSecretID.length === 0) {
+            return;
+        }
+
+        for (const user of usersWithSecretID) {
+            await users.updateOne(
+                { email: user.email },
+                { $pull: { shares: { secretID: deletion.secretID } } }
+            );
+            console.log(`Deleted shares for user ${user.email}.`);
+        }
+        await deletions.deleteOne({ _id: deletion._id });
+        console.log(`Deleted deletion ${deletion._id}.`);
+    } catch (e) {
+        console.error(e);
+
+        throw e;
+    }
+};
+
 module.exports.isEmailTaken = isEmailTaken;
 module.exports.getUser = getUser;
 module.exports.checkPassword = checkPassword;
@@ -324,4 +361,5 @@ module.exports.pushSecretToQueue = pushSecretToQueue;
 module.exports.shareSharesMany = shareSharesMany;
 module.exports.getProgressOfAllSecrets = getProgressOfAllSecrets;
 module.exports.deleteUserData = deleteUserData;
+module.exports.processDeletions = processDeletions;
 module.exports.NUM_USERS_TO_SHARE_WITH = NUM_USERS_TO_SHARE_WITH;
