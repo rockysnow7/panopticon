@@ -5,6 +5,8 @@ const nthline = require("nthline");
 
 const mongo_username = process.env.MONGO_USERNAME;
 const mongo_password = process.env.MONGO_PASSWORD;
+console.log(mongo_username, mongo_password);
+
 const uri = `mongodb+srv://${mongo_username}:${mongo_password}@cluster0.zmdlf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 const client = new MongoClient(uri);
 const db = client.db("db");
