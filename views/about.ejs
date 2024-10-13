@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>panopticon | about</title>
+        <link rel="stylesheet" href="/style.css" />
+        <link rel="icon" href="/favicon.png" />
+    </head>
+    <body>
+        <div class="header">
+            <h1><a href="/">panopticon</a></h1>
+            <h2><a href="/about">about</a></h2>
+            <% if (loggedIn) { %>
+                <h2><a href="/settings">settings</a></h2>
+                <h2><a href="/logout">log out</a></h2>
+            <% } %>
+        </div>
+        <div class="main">
+            <h2>about</h2>
+            <div class="ruled">
+                <p><i>panopticon</i> is a website that lets you share secrets anonymously.</p>
+                <p>i like the idea of public anonymity, and sharing secrets in such a way that no-one can understand them.</p>
+            </div>
+            <div class="ruled">
+                <p>it works like this:</p>
+                <ol>
+                    <li><p>you sign up for an account.</p></li>
+                    <li><p>you share a secret.</p></li>
+                    <li><p>the secret is split into <%= NUM_USERS_TO_SHARE_WITH %> parts, which are randomly distributed to other users.<br>a part is a series of words, e.g., <span class="mono">board-formals-wsp-drifted-reflow-soll-north-biter</span>.</p></li>
+                    <li><p>on their own, the parts are meaningless; only when all parts are brought together can the original secret be recovered. no-one knows who else has the other parts, so no-one can reconstruct your secret.</p></li>
+                    <li><p>you will receive parts of other users' secrets, which you can view.</p></li>
+                </ol>
+            </div>
+            <p><b><i>technical details and disclaimer</i></b></p>
+            <ul>
+                <li><p>secrets are split using the <a href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing">shamir secret sharing scheme</a>, specifically <a href="https://github.com/jwerle/shamirs-secret-sharing">this library</a>.</p></li>
+                <li><p>each share is converted deterministically into a series of words using a modified version of <a href="https://norvig.com/ngrams/count_1w.txt">this word list</a>.</p></li>
+                <li><p>the shares are then saved to a <a href="https://www.mongodb.com/">MongoDB</a> cloud database.</p></li>
+                <li><p>user names and emails are also stored in plaintext in this database, and passwords are hashed and salted with <a href="https://www.npmjs.com/package/bcrypt">bcrypt</a> before being stored.</p></li>
+                <li><p><b>this is an art project, not a security project.</b> with enough collaboration, it is possible to recover secrets that have been shared here, so please don't use this for anything important.</p></li>
+            </ul>
+        </div>
+        <div class="footer">
+            <p>made with 💖 by <a href="https://github.com/rockysnow7">finn</a>. this website uses one (1) cookie.</p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>panopticon</title>
+        <link rel="stylesheet" href="/style.css" />
+        <link rel="icon" href="/favicon.png" />
+        <script>
+            const toggleSection = sectionId => {
+                const section = document.getElementById(sectionId);
+                const arrow = document.querySelector(`[data-section="${sectionId}"]`);
+                if (section.style.display === 'none') {
+                    section.style.display = 'block';
+                    arrow.textContent = '▼';
+                } else {
+                    section.style.display = 'none';
+                    arrow.textContent = '▶';
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <h1><a href="/">panopticon</a></h1>
+            <h2><a href="/about">about</a></h2>
+            <h2><a href="/settings">settings</a></h2>
+            <h2><a href="/logout">log out</a></h2>
+        </div>
+        <div class="main">
+            <h2>hi, <%= name %>!</h2>
+            <div class="ruled">
+                <p>share a secret:</p>
+                <form method="post">
+                <input type="text" placeholder="<%= placeholder %>" name="secret" required />
+                    <button type="submit">submit</button>
+                </form>
+            </div>
+            <p>
+                your secrets:
+                <span class="toggle-arrow" data-section="secretsSection" onclick="toggleSection('secretsSection')">▼</span>
+            </p>
+            <div id="secretsSection">
+                <ul>
+                    <% if (secrets.length > 0) { %>
+                        <% for (const secret of secrets) { %>
+                            <li><p class="mono"><%= secret.secretID %></p><p class="dim"><% if (secret.progress < NUM_USERS_TO_SHARE_WITH) { %> (<%= secret.progress %>/<%= NUM_USERS_TO_SHARE_WITH %> shared)<% } %></p></li>
+                        <% } %>
+                    <% } else { %>
+                        <li><p>(you haven't shared any secrets yet!)</p></li>
+                    <% } %>
+                </ul>
+            </div>
+            <p>
+                your shares:
+                <span class="toggle-arrow" data-section="sharesSection" onclick="toggleSection('sharesSection')">▼</span>
+            </p>
+            <div id="sharesSection">
+                <ul>
+                    <% if (shares && shares.length > 0) { %>
+                        <% for (const share of shares) { %>
+                            <li><p class="mono"><%= share %></p></li>
+                        <% } %>
+                    <% } else { %>
+                        <li><p>(you haven't received any shares yet!)</p></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <p>made with 💖 by <a href="https://github.com/rockysnow7">finn</a>. this website uses one (1) cookie.</p>
+        </div>
+    </body>
+</html>

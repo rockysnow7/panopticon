@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>panopticon | sign up</title>
+        <link rel="stylesheet" href="/style.css" />
+        <link rel="icon" href="/favicon.png" />
+    </head>
+    <body>
+        <div class="header">
+            <h1 class="selected"><a href="/">panopticon</a></h1>
+            <h2><a href="/about">about</a></h2>
+        </div>
+        <div class="main">
+            <h2>sign up</h2>
+            <form method="post" id="signup-form">
+                <input type="text" name="name" placeholder="sylvia" <% if (givenName) { %>value="<%= givenName %>"<% } %> required <% if (error && error.type === "name") { %>class="error"<% } %>><br>
+                <input type="text" name="email" placeholder="sylvia@example.com" <% if (givenEmail) { %>value="<%= givenEmail %>"<% } %> required <% if (error && error.type === "email") { %>class="error"<% } %>><br>
+                <input type="password" name="password" placeholder="password" required>
+                <button type="submit">sign up</button>
+            </form>
+            <% if (error) { %>
+                <p class="error"><%= error.message %></p>
+            <% } %>
+            <p>already have an account? <a href="/login">log in</a>.</p>
+        </div>
+        <div class="footer">
+            <p>made with 💖 by <a href="https://github.com/rockysnow7">finn</a>. this website uses one (1) cookie.</p>
+        </div>
+    </body>
+</html>

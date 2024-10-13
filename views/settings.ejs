@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>panopticon | settings</title>
+        <link rel="stylesheet" href="/style.css" />
+        <link rel="icon" href="/favicon.png" />
+    </head>
+    <body>
+        <div class="header">
+            <h1><a href="/">panopticon</a></h1>
+            <h2><a href="/about">about</a></h2>
+            <h2><a href="/settings">settings</a></h2>
+            <h2><a href="/logout">log out</a></h2>
+        </div>
+        <div class="main">
+            <h2>settings</h2>
+            <div class="ruled">
+                <p>you can change your name and email here,<br>or <a href="/delete" id="delete-link">delete your account</a>.</p>
+            </div>
+            <form method="post">
+                <label for="name">new name:</label>
+                <input type="text" name="name" placeholder="<%= name %>" <% if (givenName) { %>value="<%= givenName %>"<% } %> <% if (error && error.type === "name") { %>class="error"<% } %>><br>
+                <label for="email">new email:</label>
+                <input type="text" name="email" placeholder="<%= email %>" <% if (givenEmail) { %>value="<%= givenEmail %>"<% } %> <% if (error && error.type === "email") { %>class="error"<% } %>><br>
+                <% if (error) { %>
+                    <p class="error"><%= error.message %></p>
+                <% } %>
+                <% if (success) { %>
+                    <p class="success"><%= success.message %></p>
+                <% } %>
+                <button type="submit" id="settings-save">save</button>
+            </form>
+        </div>
+        <div class="footer">
+            <p>made with 💖 by <a href="https://github.com/rockysnow7">finn</a>. this website uses one (1) cookie.</p>
+        </div>
+    </body>
+</html>
